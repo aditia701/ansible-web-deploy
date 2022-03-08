@@ -1,0 +1,29 @@
+---
+- name: Update repository
+  apt: update_cache=true upgrade=yes
+  become: yes
+
+- name: Install apache
+  apt: name={{ apache_ver }} state=latest update_cache=true
+  notify:
+  - start apache
+
+- name: Install git pkg
+  apt: 
+    name: git
+    state: present
+    update_cache: true
+
+- name: Delete index.html
+  ansible.builtin.file:
+    path: /var/www/html/index.html
+    state: absent
+
+- name: Clone from git 
+  ansible.builtin.git:
+    repo: https://github.com/aditia701/landing-page.git
+    dest: /var/www/html
+    force: yes
+  notify:
+  - restart apache
+

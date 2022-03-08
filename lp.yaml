@@ -1,0 +1,7 @@
+---
+- name: Install apache with ansible
+  hosts: client
+  become: yes
+  roles:
+  - html
+  
